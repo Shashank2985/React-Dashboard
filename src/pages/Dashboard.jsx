@@ -5,13 +5,17 @@ import FilterBar from "../components/FilterBar";
 import UserCard from "../components/UserCard";
 import Navbar from "../components/Navbar";
 import { Loader2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
     const [users, setUsers] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedCity, setSelectedCity] = useState("All");
+    const [selectedCompany, setSelectedCompany] = useState("All");
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         const loadUsers = async () => {
@@ -27,43 +31,36 @@ const Dashboard = () => {
         loadUsers();
     }, []);
 
-    // 🔍 Filtered Users
+    const cities = ["All", ...new Set(users.map((user) => user.address.city))];
+    const companies = ["All", ...new Set(users.map((user) => user.company.name))];
+
     const filteredUsers = users.filter((user) => {
         const matchesSearch = user.name.toLowerCase().includes(searchQuery.toLowerCase());
         const matchesCity = selectedCity === "All" || user.address.city === selectedCity;
-        return matchesSearch && matchesCity;
+        const matchesCompany = selectedCompany === "All" || user.company.name === selectedCompany;
+        return matchesSearch && matchesCity && matchesCompany;
     });
 
-    // Unique cities for filter dropdown
-    const cities = ["All", ...new Set(users.map((user) => user.address.city))];
-
-    if (loading) {
+    if (loading || error) {
         return (
             <div className="min-h-screen bg-background">
                 <Navbar />
                 <div className="flex flex-col items-center justify-center min-h-[calc(100vh-80px)] bg-gradient-to-br from-background to-muted/20">
-                    <div className="flex items-center space-x-3 bg-card p-8 rounded-2xl shadow-lg border">
-                        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-                        <p className="text-foreground text-xl font-medium">Loading users...</p>
-                    </div>
-                </div>
-            </div>
-        );
-    }
-
-    if (error) {
-        return (
-            <div className="min-h-screen bg-background">
-                <Navbar />
-                <div className="flex flex-col items-center justify-center min-h-[calc(100vh-80px)] bg-gradient-to-br from-background to-muted/20">
-                    <div className="bg-card p-8 rounded-2xl shadow-lg border border-destructive/20">
-                        <div className="flex items-center space-x-3">
-                            <div className="w-8 h-8 bg-destructive/10 rounded-full flex items-center justify-center">
-                                <span className="text-destructive font-bold">!</span>
-                            </div>
-                            <p className="text-destructive text-xl font-medium">{error}</p>
+                    {loading ? (
+                        <div className="flex items-center space-x-3 bg-card p-8 rounded-2xl shadow-lg border">
+                            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                            <p className="text-foreground text-xl font-medium">Loading users...</p>
                         </div>
-                    </div>
+                    ) : (
+                        <div className="bg-card p-8 rounded-2xl shadow-lg border border-destructive/20">
+                            <div className="flex items-center space-x-3">
+                                <div className="w-8 h-8 bg-destructive/10 rounded-full flex items-center justify-center">
+                                    <span className="text-destructive font-bold">!</span>
+                                </div>
+                                <p className="text-destructive text-xl font-medium">{error}</p>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
         );
@@ -73,7 +70,6 @@ const Dashboard = () => {
         <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/10">
             <Navbar />
             <div className="mt-14 container mx-auto px-4 py-8 max-w-7xl">
-                {/* Header Section */}
                 <div className="mb-8">
                     <div className="flex flex-col space-y-2 mb-6">
                         <h1 className="text-3xl font-bold text-foreground">Team Directory</h1>
@@ -82,22 +78,25 @@ const Dashboard = () => {
                         </p>
                     </div>
 
-                    {/* Search and Filter Controls */}
+                    {/* Search and Filters */}
                     <div className="flex flex-col lg:flex-row gap-4 mb-6">
                         <div className="flex-1">
                             <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
                         </div>
                         <div className="lg:w-64">
-                            <FilterBar selected={selectedCity} setSelected={setSelectedCity} options={cities} />
+                            <FilterBar label="Cit" selected={selectedCity} setSelected={setSelectedCity} options={cities} />
+                        </div>
+                        <div className="lg:w-64">
+                            <FilterBar label="Compan" selected={selectedCompany} setSelected={setSelectedCompany} options={companies} />
                         </div>
                     </div>
 
-                    {/* Results Summary */}
                     <div className="flex items-center justify-between">
                         <p className="text-sm text-muted-foreground">
                             Showing {filteredUsers.length} of {users.length} users
                             {searchQuery && ` matching "${searchQuery}"`}
                             {selectedCity !== "All" && ` in ${selectedCity}`}
+                            {selectedCompany !== "All" && ` from ${selectedCompany}`}
                         </p>
                     </div>
                 </div>
@@ -111,8 +110,7 @@ const Dashboard = () => {
                                 className="animate-in fade-in-0 duration-300"
                                 style={{ animationDelay: `${index * 50}ms` }}
                             >
-                                <UserCard user={user} />
-                                {console.log(user)}
+                                <UserCard user={user} onClick={() => navigate(`/user/${user.id}`)} />
                             </div>
                         ))}
                     </div>

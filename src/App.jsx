@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./routes/ProtectedRoute";
+import UserProfile from "./components/UserProfile";
 
 function App() {
   return (
@@ -14,6 +15,12 @@ function App() {
             <Dashboard />
           </ProtectedRoute>
         }
+      />
+      <Route path="/user/:id" element={
+        <ProtectedRoute>
+          <UserProfile />
+        </ProtectedRoute>
+      }
       />
     </Routes>
   );

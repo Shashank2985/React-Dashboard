@@ -1,10 +1,12 @@
-import { ChevronDown, MapPin } from "lucide-react";
+import { ChevronDown, MapPin, Building2 } from "lucide-react";
 
-const FilterBar = ({ selected, setSelected, options }) => {
+const FilterBar = ({ selected, setSelected, options, label }) => {
+    const icon = label === "City" ? <MapPin className="h-5 w-5 text-muted-foreground" /> : <Building2 className="h-5 w-5 text-muted-foreground" />;
+
     return (
         <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                <MapPin className="h-5 w-5 text-muted-foreground" />
+                {icon}
             </div>
             <select
                 value={selected}
@@ -13,7 +15,7 @@ const FilterBar = ({ selected, setSelected, options }) => {
             >
                 {options.map((option, idx) => (
                     <option key={idx} value={option} className="bg-background text-foreground">
-                        {option === "All" ? "All Cities" : option}
+                        {option === "All" ? `All ${label}ies` : option}
                     </option>
                 ))}
             </select>
