@@ -1,12 +1,67 @@
-# React + Vite
+# React Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, responsive, and minimal React Dashboard built with **Vite**, **Tailwind CSS**, and **React Context API** for authentication and global state management.
+---
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- ⚡️ Built with **Vite** for ultra-fast development
+- 🎨 Styled with **Tailwind CSS**
+- 🔐 **Authentication Context** with login/logout functionality
+- 🧭 Modular layout with **Navbar**, **Sidebar**, and page containers
+- 📱 Fully **responsive** design
+- 🌙 Light/Dark mode toggle (optional to implement)
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 📁 Project Structure
+
+```bash
+.
+├── public/
+├── src/
+│   ├── assets/              # Static files & icons
+│   ├── components/          # Reusable UI components
+│   ├── context/             # Auth and global context providers
+│   ├── pages/               # Dashboard pages
+│   ├── routes/              # Routing configuration
+│   ├── App.jsx              # Root component
+│   └── main.jsx             # Entry point
+├── index.html
+├── tailwind.config.js       # Tailwind CSS config
+├── vite.config.js           # Vite config
+└── package.json
+```
+## 🛠️ Tech Stack
+
+- React.js
+- Vite
+- Tailwind CSS
+- Lucide Icons
+- React Router
+- React Context API
+
+## ⚙️ Getting Started
+1. Clone the Repository
+```bash
+git clone https://github.com/Shashank2985/React-Dashboard.git
+cd React-Dashboard
+```
+2. Install Dependencies
+```bash
+npm install
+```
+3. Start the Development Server
+```bash
+npm run dev
+```
+4. Build for Production
+```bash
+npm run build
+```
+
+## 🔑 Authentication
+Auth is managed using a custom AuthContext
+You can integrate with external auth providers (like Firebase, Supabase, Clerk) or your own backend
+
+
